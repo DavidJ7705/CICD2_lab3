@@ -26,3 +26,9 @@ def add_user(user: User):
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="user_id already exists")
     users.append(user)
     return user
+
+#reflection questions
+#1 comes from validation problems like if the name is too short or too long, if the email isn't the right format, or if the age is too young ayo
+#2 201 useful as it lets you know that a new entry was created, 404 is good as it shows something wasn't found or doesn't exist
+#3 the layout helps as more endpoints can easily be added and tested using swagger. Validation logic can also just be added into the cshemas
+
