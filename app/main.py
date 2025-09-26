@@ -32,9 +32,11 @@ def add_user(user: User):
 #2 201 useful as it lets you know that a new entry was created, 404 is good as it shows something wasn't found or doesn't exist
 #3 the layout helps as more endpoints can easily be added and tested using swagger. Validation logic can also just be added into the cshemas
 
-@app.put("/api/users/{user_id}")
-def update_user(user_id: int):
-    for u in users:
-        if u.user_id == user_id:
-            return enumerate(u)
-    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found") #need to fix
+@app.put("/api/users/{user_id}", status_code=status.HTTP_201_CREATED)
+def update_user(user_id: int, updated_user: User):
+    for i, user in enumerate(users):
+        if user.user_id == user_id:
+            users[i] = updated_user
+            return updated_user
+    if any(user.user_id == updated_user.user_id for user in users):
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="user_id already exists")
