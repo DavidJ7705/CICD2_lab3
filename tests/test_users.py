@@ -53,7 +53,9 @@ def test_put_user_404(client): # had to change main.py, as the put method there,
     assert r.status_code == 404
 
 
-@pytest.mark.parametrize("bad_email", ["pl@atu.ie", "p", "23", "S1278"]) # if there is a valid email, test fails
+@pytest.mark.parametrize("bad_email", ["pl", "p", "23", "S1278"]) # if there is a valid email, test fails
 def test_bad_student_id_422(client, bad_email):
     r = client.post("/api/users", json=user_payload(uid=3, email=bad_email))
     assert r.status_code == 422
+
+#create pull request now with the email test working, verifies work flow
