@@ -1,9 +1,19 @@
 # app/schemas.py
-from pydantic import BaseModel, EmailStr, constr, conint, Field
+from typing import Annotated
+from pydantic import BaseModel, EmailStr, Field, StringConstraints, ConfigDict
 
-class User(BaseModel):
-    user_id: int
-    student_id: str = Field(..., pattern=r"^S\d{7}$") # regex got replaced by pattern in new version of pydancti
-    name: constr(min_length=2, max_length=50)
+NameStr = Annotated[str, StringConstraints(min_length=2, max_length=50)]
+StudentId = Annotated[str, StringConstraints(pattern=r"^S\d{7}$")]
+
+class UserCreate(BaseModel):
+    name: NameStr
     email: EmailStr
-    age: conint(gt=18)
+    age: int = Field(gt=18)
+    student_id: StudentId
+class UserRead(BaseModel):
+    id: int
+    name: NameStr
+    email: EmailStr
+    age: int
+    student_id: StudentId
+    model_config = ConfigDict(from_attributes=True)
